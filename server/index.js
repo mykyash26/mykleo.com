@@ -44,7 +44,6 @@ app.post('/api/phone/send',requireUser,async(req,res)=>{ try { requireEnv('TWILI
 app.post('/api/phone/verify',requireUser,async(req,res)=>{ try { requireEnv('TWILIO_ACCOUNT_SID','TWILIO_AUTH_TOKEN','TWILIO_VERIFY_SERVICE_SID'); const client=twilio(process.env.TWILIO_ACCOUNT_SID,process.env.TWILIO_AUTH_TOKEN); const r=await client.verify.v2.services(process.env.TWILIO_VERIFY_SERVICE_SID).verificationChecks.create({to:req.user.phone,code:String(req.body.code||'')}); if(r.status!=='approved')return res.status(400).json({error:'Invalid verification code'}); db.prepare('UPDATE users SET phone_verified=1 WHERE id=?').run(req.user.id); res.json({ok:true}); } catch(e){res.status(500).json({error:'Verification failed',detail:e.message});} });
 app.post('/api/logout',(req,res)=>{req.session=null;res.json({ok:true});});
 
-// Serve the same polished frontend when the backend is deployed as one service.
 app.use(express.static(new URL('../', import.meta.url).pathname));
-app.get('*',(_req,res)=>res.sendFile(new URL('../index.html', import.meta.url).pathname));
+app.get('/{*splat}',(_req,res)=>res.sendFile(new URL('../index.html', import.meta.url).pathname));
 app.listen(port,()=>console.log(`Relay backend listening on :${port}`));

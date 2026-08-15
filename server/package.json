@@ -1,0 +1,17 @@
+{
+  "name": "relay-backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {"start": "node index.js"},
+  "engines": {"node": ">=20"},
+  "dependencies": {
+    "better-sqlite3": "^11.10.0",
+    "cookie-session": "^2.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^5.1.0",
+    "googleapis": "^150.0.1",
+    "twilio": "^5.7.0"
+  }
+}
